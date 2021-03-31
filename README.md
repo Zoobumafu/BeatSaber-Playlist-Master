@@ -21,3 +21,9 @@ To download and install simply go to the repository's [release page](https://git
 ## Issues and Support
 If you encounter any issue, please create an issue on Github, or PM me on discord Zubumafu#2107, I will attempt to fix it as soon as I can.
 If possible, please add the playlist / song file that cause the issue into the ticket / message.
+
+
+
+
+
+![Screenshot](https://i.imgur.com/ORo0i4X.png)
