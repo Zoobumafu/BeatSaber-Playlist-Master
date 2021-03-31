@@ -17,14 +17,7 @@ using Microsoft.Win32;
 
 namespace BeatSaberUltimatePlaylistEditor
 {
-    /*
-     * TO DO - 
-     * 
-     * - Add images to playlistys
-     * - Add band name to songs
-     * - Add all songs in a folder to a playlist
-     * - Show unplaylisted/missing
-     * */
+
     public partial class MainForm : Form
     {
         //Creating a list of playlists
