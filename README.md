@@ -1,5 +1,5 @@
 # BeatSaberUltimatePlaylistEditor
-**This software work with playlists files that are read by the ["Playlist Manager mod by rithik-b"](https://github.com/rithik-b/PlaylistManager), BeatSaber can't read the playlist files**
+**This software work with playlists files that are read by the [Playlist Manager mod by rithik-b](https://github.com/rithik-b/PlaylistManager), BeatSaber can't read the playlist files**
 
 ## Features 
 - Create and delete new playlists.
@@ -16,7 +16,7 @@
 - Add search in BeatSaver and download from BeatSaver functionality, as well as filter by rating, downloads and latest.
 
 ## Download
-To download and install simply download the 'Install' zip found here, extract the files and run the Setup.exe.
+To download and install simply go to the repository's [release page](https://github.com/Zoobumafu/BeatSaberUltimatePlaylistEditor/releases) and download the latest version from there (currently 1.0.0).
 
 ## Issues and Support
 If you encounter any issue, please create an issue on Github, or PM me on discord Zubumafu#2107 and I will fix it as soon as I can.
