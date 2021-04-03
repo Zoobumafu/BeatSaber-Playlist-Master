@@ -43,22 +43,32 @@ namespace BeatSaberPlaylistMaster
             InitializeComponent();
 
             //Populate playlists
-            DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + "Playlists");
-            var playlistFiles = playlistsDirectory.GetFiles();
-
-            for (int i = 0; i < playlistFiles.Length; i++)
+            //Populate playlists
+            try
             {
-                string myString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
-                playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
+                DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + @"\Playlists");
+                var playlistFiles = playlistsDirectory.GetFiles();
 
-
-                playlists[i].filePath = playlistFiles[i].FullName;
-
-                //Save an image, if exists
-                if (playlists[i].image != null)
+                for (int i = 0; i < playlistFiles.Length; i++)
                 {
-                    playlists[i].setImage();        
+                    string myString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
+                    playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
+
+
+                    playlists[i].filePath = playlistFiles[i].FullName;
+
+                    //Save an image, if exists
+                    if (playlists[i].image != null)
+                    {
+                        playlists[i].setImage();
+                    }
                 }
+
+            }
+
+            catch(Exception e)
+            {
+                Console.WriteLine("Not found directory: " + e);
             }
 
 
@@ -84,8 +94,7 @@ namespace BeatSaberPlaylistMaster
             associateFilesWithSongs();
             PopulatePlaylistForms(playlists);
             PopulateAllSongsTreeView();
-        }      
-
+        }
         private void checkBeatSaberDirectory()
         {
             // Find the installation path before launching the form
