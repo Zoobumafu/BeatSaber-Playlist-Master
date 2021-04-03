@@ -43,10 +43,9 @@ namespace BeatSaberPlaylistMaster
             InitializeComponent();
 
             //Populate playlists
-            //Populate playlists
             try
             {
-                DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + @"\Playlists");
+                DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + @"Playlists");
                 var playlistFiles = playlistsDirectory.GetFiles();
 
                 for (int i = 0; i < playlistFiles.Length; i++)
@@ -66,7 +65,7 @@ namespace BeatSaberPlaylistMaster
 
             }
 
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Not found directory: " + e);
             }
@@ -109,7 +108,7 @@ namespace BeatSaberPlaylistMaster
                 if (File.Exists(@value + @"\Beat Saber.exe"))
                 {
                     correctDirectory = true;
-                    beatSaberDirectory = @value;
+                    beatSaberDirectory = @value + "\\";
                 }
 
                 // Could not find the location automatically, prompting the user to input it.
@@ -120,7 +119,7 @@ namespace BeatSaberPlaylistMaster
                     if (File.Exists(@path + @"\Beat Saber.exe"))
                     {
                         correctDirectory = true;
-                        beatSaberDirectory = path;
+                        beatSaberDirectory = path + "\\";
                     }
                     else if (path == "Quit")
                     {
@@ -137,15 +136,12 @@ namespace BeatSaberPlaylistMaster
         }
 
         public void associateFilesWithSongs()
-        { 
-            DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"Beat Saber_Data\CustomLevels");
-            DirectoryInfo[] files = filesDirectory.GetDirectories();
+        {
+            // Loading songs files
             try
             {
-                for (int i = 0; i < allSongs.Count; i++)
-                {
-                    allSongs[i].file = null;
-                }
+                DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"Beat Saber_Data\CustomLevels");
+                DirectoryInfo[] files = filesDirectory.GetDirectories();
 
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -158,9 +154,9 @@ namespace BeatSaberPlaylistMaster
                     }
 
                 }
-            }
 
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("Not found directory: " + e);
             }
@@ -168,7 +164,10 @@ namespace BeatSaberPlaylistMaster
             // Deassociate with files first, reason being, if the file path is saved in the file, and than the file is deleted, 
             // the object will point to multiple null values, and cause the software to crash
 
-
+            for (int i = 0; i < allSongs.Count; i++)
+            {
+                allSongs[i].file = null;
+            }
 
             for (int j = 0; j < songFiles.Count; j++)
             {
@@ -185,11 +184,11 @@ namespace BeatSaberPlaylistMaster
                         }
                     }
 
-                       
+
                 }
                 if (inPlaylist == false)
                 {
-                    
+
                     outOfPlaylistFiles.Add(songFiles[j]);
                     playlistSong newSong = new playlistSong();
                     newSong.songName = songFiles[j]._songName;
@@ -206,14 +205,13 @@ namespace BeatSaberPlaylistMaster
                 if (allSongs[i].file == null)
                 {
                     missingFile.Add(allSongs[i]);
-                    
+
                 }
                 else
                 {
                     songsWithFiles.Add(allSongs[i]);
                 }
             }
-
         }
 
         void PopulatePlaylistForms(List<Playlist> playlists)
@@ -244,7 +242,7 @@ namespace BeatSaberPlaylistMaster
 
         void PopulateAllSongsTreeView(string filter = "")
         {
-            List<playlistSong> sortedList = new List<playlistSong>(); 
+            List<playlistSong> sortedList = new List<playlistSong>();
             allSongsTreeView.Nodes.Clear();
             if (lastModifiedRadioButton.Checked == true)
             {
@@ -269,7 +267,7 @@ namespace BeatSaberPlaylistMaster
                     sortedList.Add(tempMissingFiles[i]);
                 }
 
-                
+
             }
             else if (nameRadioButton.Checked == true)
             {
@@ -277,7 +275,7 @@ namespace BeatSaberPlaylistMaster
             }
 
             for (int i = 0; i < sortedList.Count; i++)
-                {
+            {
                 if (sortedList[i].songName != null)
                 {
                     if (sortedList[i].songName.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
@@ -331,7 +329,7 @@ namespace BeatSaberPlaylistMaster
                     playlistTreeView1.Nodes[i].Checked = true;
                 }
             }
-            
+
             PopulateSongsForm(myPlaylist, playlistSongTreeView);
         }
 
@@ -426,7 +424,7 @@ namespace BeatSaberPlaylistMaster
             }
 
             isSaved = true;
-            
+
         }
 
         private void addSong(string songName = "currentNode")
@@ -535,7 +533,7 @@ namespace BeatSaberPlaylistMaster
             removeSong();
         }
 
-        public bool createNewPlaylist (string playListName, string playListAuthor)
+        public bool createNewPlaylist(string playListName, string playListAuthor)
         {
             if (File.Exists(beatSaberDirectory + @"\playlists\" + playListName))
             {
@@ -616,7 +614,7 @@ namespace BeatSaberPlaylistMaster
 
         private void playlistPictureBox_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new OpenFileDialog());
+            using (OpenFileDialog dlg = new OpenFileDialog()) ;
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -628,7 +626,7 @@ namespace BeatSaberPlaylistMaster
         {
             for (int i = 0; i < playlists.Count; i++)
             {
-                if(playlistTreeView1.SelectedNode.Text == playlists[i].playlistTitle)
+                if (playlistTreeView1.SelectedNode.Text == playlists[i].playlistTitle)
                 {
                     string input = Interaction.InputBox("Please choose a new name", "Choose a new name", playlists[i].playlistTitle);
                     if (!String.IsNullOrWhiteSpace(input))
@@ -677,7 +675,7 @@ namespace BeatSaberPlaylistMaster
                     addSong(allSongsTreeView.Nodes[i].Text);
                 }
             }
-            
+
         }
 
         private void addUnplaylistedButton_Click(object sender, EventArgs e)
@@ -697,7 +695,7 @@ namespace BeatSaberPlaylistMaster
                             continue;
                         }
                     }
-                    
+
                 }
                 if (isUnplaylisted == true)
                 {
@@ -723,7 +721,7 @@ namespace BeatSaberPlaylistMaster
                 }
             }
 
-            
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -736,7 +734,7 @@ namespace BeatSaberPlaylistMaster
                     saveAll();
                 }
             }
-            
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
