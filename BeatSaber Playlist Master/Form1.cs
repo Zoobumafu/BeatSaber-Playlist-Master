@@ -140,27 +140,36 @@ namespace BeatSaberPlaylistMaster
         { 
             DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"Beat Saber_Data\CustomLevels");
             DirectoryInfo[] files = filesDirectory.GetDirectories();
+            try
+            {
+                for (int i = 0; i < allSongs.Count; i++)
+                {
+                    allSongs[i].file = null;
+                }
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (File.Exists(files[i].FullName + @"\info.dat"))
+                    {
+                        string jsonString = File.ReadAllText(files[i].FullName + @"\info.dat");
+                        songFiles.Add(JsonConvert.DeserializeObject<SongFile>(jsonString));
+                        songFiles[songFiles.Count - 1].filePath = files[i].FullName;
+                        songFiles[songFiles.Count - 1].lastModified = files[i].LastWriteTime;
+                    }
+
+                }
+            }
+
+            catch(Exception e)
+            {
+                Console.WriteLine("Not found directory: " + e);
+            }
 
             // Deassociate with files first, reason being, if the file path is saved in the file, and than the file is deleted, 
             // the object will point to multiple null values, and cause the software to crash
 
-            for (int i = 0; i < allSongs.Count; i ++)
-            {
-                allSongs[i].file = null;
-            }
 
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (File.Exists(files[i].FullName + @"\info.dat"))
-                {
-                    string jsonString = File.ReadAllText(files[i].FullName + @"\info.dat");
-                    songFiles.Add(JsonConvert.DeserializeObject<SongFile>(jsonString));
-                    songFiles[songFiles.Count-1].filePath = files[i].FullName;
-                    songFiles[songFiles.Count - 1].lastModified = files[i].LastWriteTime;
-                }
 
-            }
-            
             for (int j = 0; j < songFiles.Count; j++)
             {
                 bool inPlaylist = false;
