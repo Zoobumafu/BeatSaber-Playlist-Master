@@ -3,20 +3,23 @@
 
 ## Features 
 - Create and delete new playlists.
-- Edit the image of a playlist.
 - Edit the list of songs inside the playlist, with time saving tools like adding all unplaylisted songs or adding all search results.
+- Edit the image and description of a playlist.
+- Download missing songs from existing playlists (for example, when you receive a playlist file from a friend, or download one from [Bsaber.com](https://bsaber.com/))
 
 ## To be added
 ### Soon
-- Ability to download songs that are listed in the playlist, but are their files are missing.
-- To accompany the ability to download songs, add functionality to view only missing songs, and download all missing songs with one click.
-- Code cleanup.
+- Code cleanup and fix known bugs.
 
 ### Later
 - Add search in BeatSaver and download from BeatSaver functionality, as well as filter by rating, downloads and latest.
+- Rewrite most of the base code using [Zingabopp's BeatSaberPlaylistsLib](https://github.com/Zingabopp/BeatSaberPlaylistsLib) to work better with PlaylistManager
 
 ## Download
-To download and install simply go to the repository's [release page](https://github.com/Zoobumafu/BeatSaberUltimatePlaylistEditor/releases) and download the latest version from there (currently 1.0.0).
+To download and install simply go to the repository's [release page](https://github.com/Zoobumafu/BeatSaberUltimatePlaylistEditor/releases) and download the latest version from there (currently 1.1.0).
+
+## Known Issues
+
 
 ## Issues and Support
 If you encounter any issue, please create an issue on Github, or PM me on discord Zubumafu#2107, I will attempt to fix it as soon as I can.
