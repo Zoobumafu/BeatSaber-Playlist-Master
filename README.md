@@ -1,4 +1,4 @@
-# BeatSaberUltimatePlaylistEditor
+# BeatSaberPlaylistMaster
 **This software work with playlists files that are read by the [Playlist Manager mod by rithik-b](https://github.com/rithik-b/PlaylistManager), BeatSaber can't read the playlist files**
 
 ## Features 
@@ -19,5 +19,11 @@
 To download and install simply go to the repository's [release page](https://github.com/Zoobumafu/BeatSaberUltimatePlaylistEditor/releases) and download the latest version from there (currently 1.0.0).
 
 ## Issues and Support
-If you encounter any issue, please create an issue on Github, or PM me on discord Zubumafu#2107 and I will fix it as soon as I can.
+If you encounter any issue, please create an issue on Github, or PM me on discord Zubumafu#2107, I will attempt to fix it as soon as I can.
 If possible, please add the playlist / song file that cause the issue into the ticket / message.
+
+
+
+
+
+![Screenshot](https://i.imgur.com/ORo0i4X.png)
