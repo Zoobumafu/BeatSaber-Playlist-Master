@@ -1,4 +1,4 @@
-# BeatSaberUltimatePlaylistEditor
+# BeatSaberPlaylistMaster
 **This software work with playlists files that are read by the [Playlist Manager mod by rithik-b](https://github.com/rithik-b/PlaylistManager), BeatSaber can't read the playlist files**
 
 ## Features 
