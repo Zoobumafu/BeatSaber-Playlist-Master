@@ -26,4 +26,4 @@ If you encounter any issue, please create an issue on Github, or PM me on discor
 If possible, please add the playlist / song file that cause the issue into the ticket / message.
 
 
-![Screenshot](https://i.imgur.com/ORo0i4X.png)
+![Screenshot](https://i.imgur.com/cuEjKqd.png)
