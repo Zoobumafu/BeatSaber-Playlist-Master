@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BeatSaberPlaylistMaster
 {
-    class SongFile
+    public class SongFile
     {
         public string _songName { set; get; }
         public string _levelAuthorName { set; get; }

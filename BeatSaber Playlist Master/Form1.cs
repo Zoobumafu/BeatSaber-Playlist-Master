@@ -15,6 +15,14 @@ using System.Threading;
 using Microsoft.VisualBasic;
 using Microsoft.Win32;
 
+
+/* TO DO - 
+
+- Create a button to download all missing songs from all playlists
+- Troubleshoot the tons of errors that pop when you try to download a song.
+
+*/
+
 namespace BeatSaberPlaylistMaster
 {
 
@@ -29,62 +37,47 @@ namespace BeatSaberPlaylistMaster
         List<playlistSong> songsWithFiles = new List<playlistSong>();
 
 
+        DownloadQueue queue;
+        Thread t;
+
         //Path to BeatSaber directory
-        string beatSaberDirectory = @"C:\Program Files (x86)\Steam\steamapps\common\Beat Saber\";
+        string beatSaberDirectory = @"C:\Program Files (x86)\Steam\steamapps\common\Beat Saber";
+
+        //Creating a variable to track selected song for song download operatiob
+        playlistSong currentSong;
 
         // GlobalParameters
         bool savingEnabled = true;
         bool isSaved = true;
         string currentSongPath;
+        
+
         TreeNode lastSelectedPlaylistNode;
         public MainForm()
         {
             checkBeatSaberDirectory();
-            InitializeComponent();
+            queue = new DownloadQueue(beatSaberDirectory);
+            
 
-            //Populate playlists
-            DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + "Playlists");
-            var playlistFiles = playlistsDirectory.GetFiles();
-
-            for (int i = 0; i < playlistFiles.Length; i++)
-            {
-                string myString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
-                playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
-
-
-                playlists[i].filePath = playlistFiles[i].FullName;
-
-                //Save an image, if exists
-                if (playlists[i].image != null)
-                {
-                    playlists[i].setImage();        
-                }
-            }
-
-
-
-            //Get a list of all songs
-
+            populatePlaylists();
+            // Reset Downloading Status
             for (int i = 0; i < playlists.Count; i++)
             {
-                for (int j = 0; j < playlists[i].songs.Count; j++)
-                {
-                    if (!allSongs.Exists(x => x.songName == playlists[i].songs[j].songName))
-                    {
-                        allSongs.Add(playlists[i].songs[j]);
-                    }
-
-                }
+                playlists[i].currentlyDownloading = false;
             }
+            getAListOfAllSongs();
 
+            InitializeComponent();
             allSongs = allSongs.Distinct().ToList();
-
-            //allSongs = allSongs.OrderBy(si => si.file.lastModified).ToList();
 
             associateFilesWithSongs();
             PopulatePlaylistForms(playlists);
             PopulateAllSongsTreeView();
+
+            
+
         }      
+
 
         private void checkBeatSaberDirectory()
         {
@@ -127,29 +120,119 @@ namespace BeatSaberPlaylistMaster
             }
         }
 
+        private void getAListOfAllSongs()
+        {
+            for (int i = 0; i < playlists.Count; i++)
+            {
+                for (int j = 0; j < playlists[i].songs.Count; j++)
+                {
+                    //if (!allSongs.Exists(x => x.songName == playlists[i].songs[j].songName))
+                    //{
+                    allSongs.Add(playlists[i].songs[j]);
+                    //}
+
+                }
+            }
+            fillSongDetails();
+        }
+
+        public async void fillSongDetails()
+        {
+            bool updatedSongs = false;
+            for (int i = 0; i < allSongs.Count; i++)
+            {
+                if (allSongs[i].songName == null)
+                {
+                    updatedSongs = true;
+                    try
+                    {
+                        await allSongs[i].populateByHashAsync();
+                        //var updateSong = new Task<Task>(allSongs[i].populateByHashAsync);
+                        //updateSong.Start();
+                        //updateSong.Wait();
+                    }
+                    catch (AggregateException)
+                    {
+                        MessageBox.Show("You have reached BeatSaver's download limit\nThe songs that have no been translated will appear ONLY in their playlist folder and will not be interactable\n" +
+                                "Please save your playlists to save the progress, we will try to continue the next time you open the app");
+                        break;
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                if (updatedSongs)
+                {
+                    updateAlertLabel.Text = "Song Details Updated, Click Me!";
+                }
+
+            }
+        }
+
+
+        private void populatePlaylists()
+        {
+            //Populate playlists
+            try
+            {
+                DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + @"\Playlists");
+                var playlistFiles = playlistsDirectory.GetFiles();
+
+                for (int i = 0; i < playlistFiles.Length; i++)
+                {
+                    string myString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
+                    playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
+
+
+                    playlists[i].filePath = playlistFiles[i].FullName;
+
+                    //Save an image, if exists
+                    if (playlists[i].image != null)
+                    {
+                        playlists[i].setImage();
+                    }
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Not found directory: " + e);
+            }
+        }
+
+        
         public void associateFilesWithSongs()
         { 
-            DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"Beat Saber_Data\CustomLevels");
+            DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"\Beat Saber_Data\CustomLevels");
             DirectoryInfo[] files = filesDirectory.GetDirectories();
 
             // Deassociate with files first, reason being, if the file path is saved in the file, and than the file is deleted, 
             // the object will point to multiple null values, and cause the software to crash
-
-            for (int i = 0; i < allSongs.Count; i ++)
+            try
             {
-                allSongs[i].file = null;
-            }
-
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (File.Exists(files[i].FullName + @"\info.dat"))
+                for (int i = 0; i < allSongs.Count; i++)
                 {
-                    string jsonString = File.ReadAllText(files[i].FullName + @"\info.dat");
-                    songFiles.Add(JsonConvert.DeserializeObject<SongFile>(jsonString));
-                    songFiles[songFiles.Count-1].filePath = files[i].FullName;
-                    songFiles[songFiles.Count - 1].lastModified = files[i].LastWriteTime;
+                    allSongs[i].file = null;
                 }
 
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (File.Exists(files[i].FullName + @"\info.dat"))
+                    {
+                        string jsonString = File.ReadAllText(files[i].FullName + @"\info.dat");
+                        songFiles.Add(JsonConvert.DeserializeObject<SongFile>(jsonString));
+                        songFiles[songFiles.Count - 1].filePath = files[i].FullName;
+                        songFiles[songFiles.Count - 1].lastModified = files[i].LastWriteTime;
+                    }
+
+                }
+            }
+            
+            catch(Exception e)
+            {
+                MessageBox.Show("Directory not found " + e);
             }
             
             for (int j = 0; j < songFiles.Count; j++)
@@ -226,10 +309,17 @@ namespace BeatSaberPlaylistMaster
 
         void PopulateAllSongsTreeView(string filter = "")
         {
+            bool warned = false;
             List<playlistSong> sortedList = new List<playlistSong>(); 
             allSongsTreeView.Nodes.Clear();
             if (lastModifiedRadioButton.Checked == true)
             {
+
+                if (warned == true)
+                {
+                    MessageBox.Show("Done!\n You can start using the program.");
+                }
+
                 List<playlistSong> tempMissingFiles = new List<playlistSong>();
                 for (int i = 0; i < allSongs.Count; i++)
                 {
@@ -283,6 +373,43 @@ namespace BeatSaberPlaylistMaster
 
         private void playlistTreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            Playlist previousPlaylist = null;
+            if (lastSelectedPlaylistNode == null)
+            {
+                previousPlaylist = playlists[0];
+            }
+            else
+            {
+                for (int i = 0; i < playlists.Count; i++)
+                {
+                    if (playlists[i].playlistTitle == lastSelectedPlaylistNode.Text)
+                    {
+                        previousPlaylist = playlists[i];
+                        previousPlaylist.description = playlistDescriptionTextBox.Text;
+
+                    }
+                }
+            }
+
+            for (int i = 0; i < playlists.Count; i++)
+            {
+                if (playlists[i].playlistTitle == playlistTreeView1.SelectedNode.Text)
+                {
+                    if (playlists[i].description != null)
+                    {
+                        playlistDescriptionTextBox.Text = playlists[i].description;
+                    }
+                    else
+                    {
+                        playlistDescriptionTextBox.Text = null;
+                    }
+                }
+            }
+
+            if (previousPlaylist != null)
+            {
+                previousPlaylist.description = playlistDescriptionTextBox.Text;
+            }
             lastSelectedPlaylistNode = playlistTreeView1.SelectedNode;
             populatePlaylistSongTreeView();
         }
@@ -303,6 +430,14 @@ namespace BeatSaberPlaylistMaster
                     {
                         playlistPictureBox.Image = null;
                     }
+                    if (myPlaylist.currentlyDownloading)
+                    {
+                        currentlyDownloadingLabel.Text = "Downloading missing songs!";
+                    }
+                    else
+                    {
+                        currentlyDownloadingLabel.Text = "";
+                    }
                 }
             }
 
@@ -314,15 +449,19 @@ namespace BeatSaberPlaylistMaster
                 }
             }
             
+            
+
             PopulateSongsForm(myPlaylist, playlistSongTreeView);
         }
 
         void populateLabels(string name)
         {
+            bool found = false;
             for (int i = 0; i < allSongs.Count; i++)
             {
                 if (allSongs[i].songName == name)
                 {
+                    found = true;
                     appearsInPlaylistTreeView.Nodes.Clear();
                     if (allSongs[i].songName != null)
                     {
@@ -358,6 +497,9 @@ namespace BeatSaberPlaylistMaster
                             }
                         }
                     }
+
+
+
                     if (allSongs[i].file != null)
                     {
                         currentSongPath = allSongs[i].file.filePath;
@@ -365,21 +507,46 @@ namespace BeatSaberPlaylistMaster
                         {
                             lastModifiedLabel.Text = allSongs[i].file.lastModified.ToString();
                         }
+                        // && Directory.Exists(allSongs[i].file.filePath + @"\" + allSongs[i].file._coverImageFilename)
                         if (allSongs[i].file._coverImageFilename != null)
                         {
-                            Bitmap bitmap = new Bitmap(allSongs[i].file.filePath + @"\" + allSongs[i].file._coverImageFilename);
-                            songPictureBox.Image = bitmap;
+                            try
+                            {
+                                Bitmap bitmap = new Bitmap(allSongs[i].file.filePath + @"\" + allSongs[i].file._coverImageFilename);
+                                songPictureBox.Image = bitmap;
+                            }
+                            catch
+                            {
+
+                            }
+                            
                         }
                         downloadedLabel.Text = "";
+                        songLocationButton.Text = "Open Song Directory";
                     }
                     else
                     {
                         lastModifiedLabel.Text = "";
                         downloadedLabel.Text = "Missing File!";
                         currentSongPath = beatSaberDirectory;
+                        currentSong = allSongs[i];
+                        currentSongPath = "missing";
+                        songLocationButton.Text = "Download Song";
                     }
-                    continue;
+                    break;
                 }
+            }
+            if (!found)
+            {
+                downloadedLabel.Text = "";
+                songPictureBox.Image = null;
+                hashLabel.Text = null;
+                authorLabel.Text = null;
+                songNameLabel.Text = null;
+                appearsInPlaylistTreeView.Nodes.Clear();
+                currentSongPath = beatSaberDirectory;
+                songLocationButton.Text = "Open BeatSaber Directory";
+
             }
         }
 
@@ -393,7 +560,7 @@ namespace BeatSaberPlaylistMaster
                     //@"data:image/gif;base64," + Convert.ToBase64String(File.ReadAllBytes
                     //playlists[i].image = @"data:image/gif;base64," + Convert.ToBase64String(playlists[i].imageFile);
                     playlists[i].imageFile = null;
-                    string jsonText = JsonConvert.SerializeObject(playlists[i]);
+                    string jsonText = JsonConvert.SerializeObject(playlists[i], Formatting.Indented);
                     File.WriteAllText(playlists[i].filePath, jsonText);
                 }
                 MessageBox.Show("All playlists saved successfully");
@@ -413,6 +580,10 @@ namespace BeatSaberPlaylistMaster
 
         private void addSong(string songName = "currentNode")
         {
+            if (allSongsTreeView.SelectedNode == null)
+            {
+                return;
+            }
             if (songName == "currentNode")
             {
                 songName = allSongsTreeView.SelectedNode.Text;
@@ -432,7 +603,7 @@ namespace BeatSaberPlaylistMaster
                             playlistSongTreeView.Nodes.Add(allSongs[i].songName);
                             if (allSongs[i].hash == null)
                             {
-                                Thread getSongDetails = new Thread(allSongs[i].populateSong);
+                                Thread getSongDetails = new Thread(allSongs[i].populateSongByName);
                                 getSongDetails.Start();
                                 Thread disableSaveButton = new Thread(temporarlyDisableSaveButton);
                                 disableSaveButton.Start();
@@ -457,6 +628,10 @@ namespace BeatSaberPlaylistMaster
 
         private void removeSong(string node = "currentNode")
         {
+            if (playlistSongTreeView.SelectedNode == null)
+            {
+                return;
+            }
             if (node == "currentNode")
             {
                 node = playlistSongTreeView.SelectedNode.Text;
@@ -492,7 +667,12 @@ namespace BeatSaberPlaylistMaster
 
         private void songLocationButton_Click(object sender, EventArgs e)
         {
-            if (currentSongPath != null)
+            if (currentSongPath == "missing")
+            {
+                queue.Show();
+                queue.addToQueue(currentSong, beatSaberDirectory);
+            }
+            else if (currentSongPath != null)
             {
                 Process.Start(@currentSongPath);
             }
@@ -719,11 +899,94 @@ namespace BeatSaberPlaylistMaster
                 }
             }
             
+            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Do you want to save before updating the list?\nIf your lists' song information is incomplete, you will lose data we have gathered from Beatsaver since you launched the game.", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                saveAll();
+            }
+            playlists = new List<Playlist>();
+            populatePlaylists();
+            getAListOfAllSongs();
+            associateFilesWithSongs();
+            PopulateAllSongsTreeView();
+            PopulatePlaylistForms(playlists);
+            populatePlaylistSongTreeView();
+            allSongs = allSongs.Distinct().ToList();
+
+            for (int i = 0; i < playlistTreeView1.Nodes.Count; i ++)
+            {
+                if (lastSelectedPlaylistNode.Text == playlistTreeView1.Nodes[i].Text)
+                {
+                    playlistTreeView1.SelectedNode = playlistTreeView1.Nodes[i];
+                }
+            }
+
+            if (currentSong != null)
+            {
+                for (int i = 0; i < playlistSongTreeView.Nodes.Count; i++)
+                {
+                    if (currentSong.songName == playlistSongTreeView.Nodes[i].Text)
+                    {
+                        playlistSongTreeView.SelectedNode = playlistSongTreeView.Nodes[i];
+                    }
+                }
+            }
+            else
+            {
+                playlistSongTreeView.SelectedNode = playlistSongTreeView.Nodes[0];
+            }
+            //playlistSongTreeView
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            Playlist songsToDownload = new Playlist();
+            try
+            {
+                for (int i = 0; i < playlists.Count; i++)
+                {
+                    if (playlists[i].playlistTitle == lastSelectedPlaylistNode.Text)
+                    {
+                        queue.addToQueueAsync(playlists[i], beatSaberDirectory);
+                    }
+                }
+            }
+            
+            catch
+            {
+                MessageBox.Show("Error Associating Files");
+            }
+            
+            //downloadPlaylist(songsToDownload);
+        }
+
+        private void downloadAllMissingSongsButton_Click(object sender, EventArgs e)
+        {
+            Playlist songsToDownload = new Playlist();
+            try
+            {
+                for (int i = 0; i < playlists.Count; i++)
+                {
+                        queue.addToQueueAsync(playlists[i], beatSaberDirectory);
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Error Associating Files");
+            }
+
+            //downloadPlaylist(songsToDownload);
         }
     }
 }

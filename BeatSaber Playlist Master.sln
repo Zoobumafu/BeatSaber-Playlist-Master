@@ -5,16 +5,20 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaber Playlist Master", "BeatSaber Playlist Master\BeatSaber Playlist Master.csproj", "{C4816FE7-2458-4C3A-B642-893A75DC366F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{3FF7E4F8-9B9B-47E3-8D3B-1AB1400E8F27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4816FE7-2458-4C3A-B642-893A75DC366F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF7E4F8-9B9B-47E3-8D3B-1AB1400E8F27}.Debug|Any CPU.ActiveCfg = Debug
+		{3FF7E4F8-9B9B-47E3-8D3B-1AB1400E8F27}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

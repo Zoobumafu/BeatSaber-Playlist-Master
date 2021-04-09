@@ -24,3 +24,29 @@ E:\GitHub Repo\BeatSaberUltimatePlaylistEditor-main (2)\BeatSaberUltimatePlaylis
 E:\GitHub Repo\BeatSaberUltimatePlaylistEditor-main (2)\BeatSaberUltimatePlaylistEditor-main\BeatSaberUltimatePlaylistEditor\obj\Debug\BeatSaberPlaylistMaster.application
 E:\GitHub Repo\BeatSaberUltimatePlaylistEditor-main (2)\BeatSaberUltimatePlaylistEditor-main\BeatSaberUltimatePlaylistEditor\obj\Debug\BeatSaberPlaylistMaster.exe
 E:\GitHub Repo\BeatSaberUltimatePlaylistEditor-main (2)\BeatSaberUltimatePlaylistEditor-main\BeatSaberUltimatePlaylistEditor\obj\Debug\BeatSaberPlaylistMaster.pdb
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaberPlaylistMaster.exe.config
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaberPlaylistMaster.exe.manifest
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaberPlaylistMaster.application
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaberPlaylistMaster.exe
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaberPlaylistMaster.pdb
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaverSharp.dll
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\Microsoft.Win32.Registry.dll
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\Newtonsoft.Json.dll
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\System.Security.AccessControl.dll
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\System.Security.Principal.Windows.dll
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\BeatSaverSharp.xml
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\Microsoft.Win32.Registry.xml
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\Newtonsoft.Json.xml
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\System.Security.AccessControl.xml
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\bin\Debug\System.Security.Principal.Windows.xml
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaber Playlist Master.csprojAssemblyReference.cache
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.CreatePlaylistForm.resources
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.MainForm.resources
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.Properties.Resources.resources
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaber Playlist Master.csproj.GenerateResource.cache
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaber Playlist Master.csproj.CoreCompileInputs.cache
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.exe.manifest
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.application
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaber Playlist Master.csproj.CopyComplete
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.exe
+E:\GitHub Repo\BeatSaberMaster\BeatSaber Playlist Master\obj\Debug\BeatSaberPlaylistMaster.pdb
