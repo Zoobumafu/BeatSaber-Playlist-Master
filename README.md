@@ -1,5 +1,7 @@
 # BeatSaberPlaylistMaster
-**This software work with playlists files that are read by the [Playlist Manager mod by rithik-b](https://github.com/rithik-b/PlaylistManager), BeatSaber can't read the playlist files**
+**This app creates and edit playlist files (json and bplist) that can be read by [rithik-b's Playlist Manager](https://github.com/rithik-b/PlaylistManager), without this mod you won't see any of the created playlists in game**
+
+![Screenshot](https://i.imgur.com/cuEjKqd.png)
 
 ## Features 
 - Create and delete new playlists.
@@ -26,4 +28,3 @@ If you encounter any issue, please create an issue on Github, or PM me on discor
 If possible, please add the playlist / song file that cause the issue into the ticket / message.
 
 
-![Screenshot](https://i.imgur.com/cuEjKqd.png)
