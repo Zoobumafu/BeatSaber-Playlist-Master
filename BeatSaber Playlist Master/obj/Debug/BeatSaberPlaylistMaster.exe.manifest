@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="BeatSaberPlaylistMaster.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="BeatSaberPlaylistMaster.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="computer-icons-playlist-download-png-favpng-bJ8Ya6wH8z9W1srerrT4wwhrr.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
     <assemblyIdentity name="BeatSaberPlaylistMaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -42,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="35808">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="848352">
       <assemblyIdentity name="BeatSaberPlaylistMaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BlDFaoeR4Wzf7ZYtqwpM+F7fsUCsIn1tzdXgDcVzwZU=</dsig:DigestValue>
+        <dsig:DigestValue>YUmglkzsCFliUFwSag1g7FCcUk7c7cx1ea1m2CG3KZM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -120,6 +121,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>Jh6vCcvpfC+h5/g9I8mD5wM/KFuRCz9um3Cm1BbjgIM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="computer-icons-playlist-download-png-favpng-bJ8Ya6wH8z9W1srerrT4wwhrr.ico" size="270398">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3OreUUqyvmJsx8nJz6NPMv7bS/XPzMgkMTt9yt8TUxQ=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

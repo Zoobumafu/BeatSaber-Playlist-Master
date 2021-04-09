@@ -8,8 +8,9 @@ using System.IO;
 
 namespace BeatSaberPlaylistMaster
 {
-    class Playlist
+    public class Playlist
     {
+        public static bool BeatSaverLimitReached = false;
         public string playlistTitle { set; get; }
         public string playlistAuthor { set; get; }
         public string _filename { set; get; }
@@ -19,7 +20,9 @@ namespace BeatSaberPlaylistMaster
         public Image imageFile;
 
         public string filePath;
+        public string description { set; get; }
 
+        public bool currentlyDownloading = false;
         public void setImage()
         {
             if (image != null)
@@ -45,6 +48,23 @@ namespace BeatSaberPlaylistMaster
                 }
             }
             
+        }
+
+
+        public async Task downloadAllSongs(string beatSaberDirectory)
+        {
+            if (!currentlyDownloading)
+            {
+                currentlyDownloading = true;
+                for (int i = 0; i < songs.Count; i++)
+                {
+                    if (songs[i].file == null)
+                    {
+                        await songs[i].downloadSong(beatSaberDirectory);
+                    }
+                }
+                currentlyDownloading = false;
+            }
         }
     }
 }
