@@ -397,7 +397,7 @@ namespace BeatSaberPlaylistMaster
                     {
                         previousPlaylist = playlists[i];
                         previousPlaylist.description = playlistDescriptionTextBox.Text;
-                        Console.WriteLine(playlistDescriptionTextBox.Text + " Saved into " + previousPlaylist.playlistTitle);
+                        //Console.WriteLine(playlistDescriptionTextBox.Text + " Saved into " + previousPlaylist.playlistTitle);
 
                     }
                 }
@@ -896,7 +896,7 @@ namespace BeatSaberPlaylistMaster
                     {
                         if (playlistTreeView1.Nodes[j].Text == lastSelectedPlaylistNode.Text)
                         {
-                            Console.WriteLine("Comparing " + playlistTreeView1.Nodes[j].Text + " and " + lastSelectedPlaylistNode.Text);
+                            //Console.WriteLine("Comparing " + playlistTreeView1.Nodes[j].Text + " and " + lastSelectedPlaylistNode.Text);
                             playlistTreeView1.Select();
                             playlistTreeView1.Nodes[j].Checked = true;
                         }
