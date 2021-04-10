@@ -55,7 +55,7 @@ namespace BeatSaberPlaylistMaster
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("Download error \n" + e.Message);
+                        var warining = Task.Run(() => { MessageBox.Show("Download Error " + e.ToString()); });
                     }
                 }
 

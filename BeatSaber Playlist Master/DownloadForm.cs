@@ -16,7 +16,7 @@ namespace BeatSaberPlaylistMaster
     {
         public static ObservableCollection<playlistSong> downloadQueue = new ObservableCollection<playlistSong>();
 
-        Task downloadTask;
+        //Task downloadTask;
         Downloader downloader;
         bool currentlyDownloading = false;
         bool currentlyUpdating = false;

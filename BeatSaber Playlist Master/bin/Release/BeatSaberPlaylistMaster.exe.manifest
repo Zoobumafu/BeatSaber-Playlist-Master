@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="2466784">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="2467296">
       <assemblyIdentity name="BeatSaberPlaylistMaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vO4TsTQFwcMpPS2jD4Tuf+Q2UN16jNouhrLa83l3WMk=</dsig:DigestValue>
+        <dsig:DigestValue>KahtEPhewP1dsuZ9abJ9S2bsat/E6FyyOVmRrhv7BLE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

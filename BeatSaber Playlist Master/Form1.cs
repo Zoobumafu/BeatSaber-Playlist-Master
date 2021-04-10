@@ -397,6 +397,7 @@ namespace BeatSaberPlaylistMaster
                     {
                         previousPlaylist = playlists[i];
                         previousPlaylist.description = playlistDescriptionTextBox.Text;
+                        Console.WriteLine(playlistDescriptionTextBox.Text + " Saved into " + previousPlaylist.playlistTitle);
 
                     }
                 }
@@ -415,11 +416,6 @@ namespace BeatSaberPlaylistMaster
                         playlistDescriptionTextBox.Text = null;
                     }
                 }
-            }
-
-            if (previousPlaylist != null)
-            {
-                previousPlaylist.description = playlistDescriptionTextBox.Text;
             }
             lastSelectedPlaylistNode = playlistTreeView1.SelectedNode;
             populatePlaylistSongTreeView();
@@ -891,13 +887,22 @@ namespace BeatSaberPlaylistMaster
             {
                 if (playlists[i].playlistTitle == lastSelectedPlaylistNode.Text)
                 {
+
                     playlists[i].songs = playlists[i].songs.Distinct().ToList();
                     PopulatePlaylistForms(playlists);
                     populatePlaylistSongTreeView();
-                }
-            }
 
-            
+                    for (int j = 0; j < playlistTreeView1.Nodes.Count; j++)
+                    {
+                        if (playlistTreeView1.Nodes[j].Text == lastSelectedPlaylistNode.Text)
+                        {
+                            Console.WriteLine("Comparing " + playlistTreeView1.Nodes[j].Text + " and " + lastSelectedPlaylistNode.Text);
+                            playlistTreeView1.Select();
+                            playlistTreeView1.Nodes[j].Checked = true;
+                        }
+                    }
+                }
+            }   
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

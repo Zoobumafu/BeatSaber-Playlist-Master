@@ -30,7 +30,7 @@ namespace BeatSaberPlaylistMaster
 
         public SongFile file;
 
-        Task download;
+        //Task download;
 
         public static int erroredSongs = 0;
 
