@@ -134,7 +134,8 @@ namespace BeatSaberPlaylistMaster
                 }
                 else
                 {
-                    var warining = Task.Run(() => { MessageBox.Show("DownloadError \n" + e); });
+                    Console.WriteLine("DownloadError \n" + e);
+                    //var warining = Task.Run(() => { MessageBox.Show("DownloadError \n" + e); });
                     return;
                 }
             }
@@ -148,7 +149,8 @@ namespace BeatSaberPlaylistMaster
             }
             catch(Exception e)
             {
-                var warining = Task.Run(() => { MessageBox.Show("Error saving song as zip \n" + e.Message); });
+                Console.WriteLine("Error saving song as zip \n" + e.Message);
+                //var warining = Task.Run(() => { MessageBox.Show("Error saving song as zip \n" + e.Message); });
                 return;
             }
 
@@ -172,7 +174,8 @@ namespace BeatSaberPlaylistMaster
             }
             catch(Exception e)
             {
-                var warining = Task.Run(() => { MessageBox.Show("Error interacting with song name \n" + e.Message); });
+                MessageBox.Show("Error interacting with song name \n" + e.Message);
+                //var warining = Task.Run(() => { MessageBox.Show("Error interacting with song name \n" + e.Message); });
                 validSongName = "" + erroredSongs;
                 return;
             }
@@ -193,7 +196,8 @@ namespace BeatSaberPlaylistMaster
             }
             catch(Exception e)
             {
-                var warining = Task.Run(() => { MessageBox.Show("Error unpacking song \n " + e.Message); });
+                MessageBox.Show("Error unpacking song \n " + e.Message);
+                //var warining = Task.Run(() => { MessageBox.Show("Error unpacking song \n " + e.Message); });
                 return;
             }
 
