@@ -118,10 +118,21 @@ namespace BeatSaberPlaylistMaster
                     }
                 }
             }
+
+            if (!Directory.Exists(beatSaberDirectory + @"\Beat Saber_Data\CustomLevels"))
+            {
+                Directory.CreateDirectory(beatSaberDirectory + @"\Beat Saber_Data\CustomLevels");
+            }
+            if (!Directory.Exists(beatSaberDirectory + @"\playlists"))
+            {
+                Directory.CreateDirectory(beatSaberDirectory + @"\playlists");
+            }
+
         }
 
         private void getAListOfAllSongs()
         {
+            allSongs = new List<playlistSong>();
             for (int i = 0; i < playlists.Count; i++)
             {
                 for (int j = 0; j < playlists[i].songs.Count; j++)
@@ -762,6 +773,7 @@ namespace BeatSaberPlaylistMaster
                     if (playlists[i].playlistTitle == playlistTreeView1.SelectedNode.Text)
                     {
                         File.Delete(playlists[i].filePath);
+                        playlists.RemoveAt(i);
                         playlistTreeView1.SelectedNode.Remove();
                         break;
                     }
