@@ -74,6 +74,8 @@
             this.songPictureBox = new System.Windows.Forms.PictureBox();
             this.removeButton = new System.Windows.Forms.Button();
             this.addButton = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.songDownloadLabel = new System.Windows.Forms.Label();
             this.sortGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playlistPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.songPictureBox)).BeginInit();
@@ -409,9 +411,9 @@
             // 
             // downloadMissingSongsButton
             // 
-            this.downloadMissingSongsButton.Location = new System.Drawing.Point(520, 643);
+            this.downloadMissingSongsButton.Location = new System.Drawing.Point(514, 643);
             this.downloadMissingSongsButton.Name = "downloadMissingSongsButton";
-            this.downloadMissingSongsButton.Size = new System.Drawing.Size(155, 23);
+            this.downloadMissingSongsButton.Size = new System.Drawing.Size(161, 23);
             this.downloadMissingSongsButton.TabIndex = 37;
             this.downloadMissingSongsButton.Text = "Download Missing Songs";
             this.downloadMissingSongsButton.UseVisualStyleBackColor = true;
@@ -421,7 +423,7 @@
             // 
             this.currentlyDownloadingLabel.AutoSize = true;
             this.currentlyDownloadingLabel.ForeColor = System.Drawing.Color.Blue;
-            this.currentlyDownloadingLabel.Location = new System.Drawing.Point(511, 682);
+            this.currentlyDownloadingLabel.Location = new System.Drawing.Point(511, 697);
             this.currentlyDownloadingLabel.Name = "currentlyDownloadingLabel";
             this.currentlyDownloadingLabel.Size = new System.Drawing.Size(0, 13);
             this.currentlyDownloadingLabel.TabIndex = 38;
@@ -448,9 +450,9 @@
             // 
             // downloadAllMissingSongsButton
             // 
-            this.downloadAllMissingSongsButton.Location = new System.Drawing.Point(517, 672);
+            this.downloadAllMissingSongsButton.Location = new System.Drawing.Point(514, 672);
             this.downloadAllMissingSongsButton.Name = "downloadAllMissingSongsButton";
-            this.downloadAllMissingSongsButton.Size = new System.Drawing.Size(330, 23);
+            this.downloadAllMissingSongsButton.Size = new System.Drawing.Size(333, 23);
             this.downloadAllMissingSongsButton.TabIndex = 41;
             this.downloadAllMissingSongsButton.Text = "Download ALL Missing Songs";
             this.downloadAllMissingSongsButton.UseVisualStyleBackColor = true;
@@ -518,12 +520,33 @@
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.addButton_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(14, 852);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(179, 28);
+            this.label12.TabIndex = 44;
+            this.label12.Text = "Downloading Song -";
+            // 
+            // songDownloadLabel
+            // 
+            this.songDownloadLabel.AutoSize = true;
+            this.songDownloadLabel.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.songDownloadLabel.Location = new System.Drawing.Point(199, 852);
+            this.songDownloadLabel.Name = "songDownloadLabel";
+            this.songDownloadLabel.Size = new System.Drawing.Size(0, 28);
+            this.songDownloadLabel.TabIndex = 45;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
-            this.ClientSize = new System.Drawing.Size(1065, 852);
+            this.ClientSize = new System.Drawing.Size(1065, 889);
+            this.Controls.Add(this.songDownloadLabel);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.playlistDescriptionTextBox);
             this.Controls.Add(this.downloadAllMissingSongsButton);
@@ -628,6 +651,8 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label songDownloadLabel;
     }
 }
 

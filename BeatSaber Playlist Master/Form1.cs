@@ -37,6 +37,7 @@ namespace BeatSaberPlaylistMaster
         List<playlistSong> songsWithFiles = new List<playlistSong>();
 
 
+
         DownloadQueue queue;
         Thread t;
 
@@ -528,6 +529,8 @@ namespace BeatSaberPlaylistMaster
                             }
                             
                         }
+                        
+                        
                         downloadedLabel.Text = "";
                         songLocationButton.Text = "Open Song Directory";
                     }
@@ -539,6 +542,7 @@ namespace BeatSaberPlaylistMaster
                         currentSong = allSongs[i];
                         currentSongPath = "missing";
                         songLocationButton.Text = "Download Song";
+                        songPictureBox.Image = null;
                     }
                     break;
                 }
@@ -676,8 +680,12 @@ namespace BeatSaberPlaylistMaster
         {
             if (currentSongPath == "missing")
             {
-                queue.Show();
-                queue.addToQueue(currentSong, beatSaberDirectory);
+                if (!downloadQueue.Contains(currentSong))
+                {
+                    downloadQueue.Add(currentSong);
+                }
+                //queue.Show();
+                //queue.addToQueue(currentSong, beatSaberDirectory);
             }
             else if (currentSongPath != null)
             {
@@ -974,7 +982,14 @@ namespace BeatSaberPlaylistMaster
                 {
                     if (playlists[i].playlistTitle == lastSelectedPlaylistNode.Text)
                     {
-                        queue.addToQueueAsync(playlists[i], beatSaberDirectory);
+                        for (int j = 0; j < playlists[i].songs.Count; j++)
+                        {
+                            if (!downloadQueue.Contains(playlists[i].songs[j]))
+                            {
+                                downloadQueue.Add(playlists[i].songs[j]);
+                            }
+                        }
+                        //queue.addToQueueAsync(playlists[i], beatSaberDirectory);
                     }
                 }
             }
@@ -983,7 +998,10 @@ namespace BeatSaberPlaylistMaster
             {
                 MessageBox.Show("Error Associating Files");
             }
-            
+
+
+            downloadSongs();
+
             //downloadPlaylist(songsToDownload);
         }
 
@@ -994,7 +1012,13 @@ namespace BeatSaberPlaylistMaster
             {
                 for (int i = 0; i < playlists.Count; i++)
                 {
-                        queue.addToQueueAsync(playlists[i], beatSaberDirectory);
+                    for (int j = 0; j < playlists[i].songs.Count; j++)
+                    {
+                        if (!downloadQueue.Contains(playlists[i].songs[j]))
+                        {
+                            downloadQueue.Add(playlists[i].songs[j]);
+                        }
+                    }
                 }
             }
 
@@ -1003,7 +1027,82 @@ namespace BeatSaberPlaylistMaster
                 MessageBox.Show("Error Associating Files");
             }
 
+            downloadSongs();
             //downloadPlaylist(songsToDownload);
         }
+
+        List<playlistSong> downloadQueue = new List<playlistSong>();
+        List<playlistSong> failedSongs = new List<playlistSong>();
+        List<playlistSong> secondAttempt = new List<playlistSong>();
+        bool currentlyDownloading = false;
+
+        int currentDownloadNumber = 0;
+        public async Task downloadSongs()
+        {
+            await downloader();
+
+            for (int i = 0; i < downloadQueue.Count; i++)
+            {
+                //downloadQueue[i].downloadSong(beatSaberDirectory).Dispose();
+            }
+            if (failedSongs.Count > 0)
+            {
+                string failedSongsString = "Download finished, but we have failed to download the following songs - \n";
+                for (int i = 0; i < failedSongs.Count; i++)
+                {
+                    failedSongsString = failedSongsString + failedSongs[i].songName + "\n";
+                }
+                MessageBox.Show(failedSongsString);
+            }
+            
+        }
+
+        public async Task downloader()
+        {
+            for (int i = 0; i < downloadQueue.Count; i++)
+            {
+                if (downloadQueue[i].songName == null)
+                {
+                    await downloadQueue[i].populateByHashAsync();
+                }
+            }
+            if (!currentlyDownloading)
+            {
+                currentlyDownloading = true;
+                while (currentDownloadNumber < downloadQueue.Count)
+                {
+                    songDownloadLabel.Text = "[" + currentDownloadNumber + @"/" + downloadQueue.Count + "] " + downloadQueue[currentDownloadNumber].songName;
+                    int timeout = 1000;
+                    var task = downloadQueue[currentDownloadNumber].downloadSong(beatSaberDirectory);
+                    if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                    if (downloadQueue[currentDownloadNumber].file == null)
+                    {
+                        failedSongs.Add(downloadQueue[currentDownloadNumber]);
+                    }
+                    currentDownloadNumber++;
+                }
+                currentlyDownloading = false;
+                //if (failedSongs.Count > 0)
+                //{
+                //    var warining = Task.Run(() => { MessageBox.Show("Attempting to redownload failed songs"); });
+                //    downloadQueue.Clear();
+                //    for (int i = 0; i < failedSongs.Count; i++)
+                //    {
+                //        downloadQueue.Add(failedSongs[i]);
+                //        secondAttempt.Add(failedSongs[i]);
+                //    }
+                //}
+                
+                songDownloadLabel.Text = "Done'd";
+            }
+        }
+
     }
 }
