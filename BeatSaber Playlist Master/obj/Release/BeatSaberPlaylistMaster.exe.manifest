@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="2468832">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BeatSaberPlaylistMaster.exe" size="2470880">
       <assemblyIdentity name="BeatSaberPlaylistMaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>sR9OziaEFjVn0AFTqmzDbepuduyIxWKMzDrpnWR9H8k=</dsig:DigestValue>
+        <dsig:DigestValue>m9YJvUNm4SmYulKdZjTo2ejIe6vEb+epcctxGQ+maQ8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -126,13 +126,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="BeatSaberPlaylistMaster.exe.config" size="531">
+  <file name="BeatSaberPlaylistMaster.exe.config" size="544">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Jh6vCcvpfC+h5/g9I8mD5wM/KFuRCz9um3Cm1BbjgIM=</dsig:DigestValue>
+      <dsig:DigestValue>dBuLcGJZURn7vOGj6aC8JWz8FXkDBNEz5xXQkJL4Dio=</dsig:DigestValue>
     </hash>
   </file>
   <file name="computer-icons-playlist-download-png-favpng-bJ8Ya6wH8z9W1srerrT4wwhrr.ico" size="270398">

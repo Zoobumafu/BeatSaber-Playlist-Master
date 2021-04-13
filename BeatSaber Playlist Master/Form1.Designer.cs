@@ -76,6 +76,7 @@
             this.addButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.songDownloadLabel = new System.Windows.Forms.Label();
+            this.unplaylistedSongsWarning = new System.Windows.Forms.Label();
             this.sortGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playlistPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.songPictureBox)).BeginInit();
@@ -539,12 +540,24 @@
             this.songDownloadLabel.Size = new System.Drawing.Size(0, 28);
             this.songDownloadLabel.TabIndex = 45;
             // 
+            // unplaylistedSongsWarning
+            // 
+            this.unplaylistedSongsWarning.AutoSize = true;
+            this.unplaylistedSongsWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.unplaylistedSongsWarning.ForeColor = System.Drawing.Color.Red;
+            this.unplaylistedSongsWarning.Location = new System.Drawing.Point(71, 7);
+            this.unplaylistedSongsWarning.Name = "unplaylistedSongsWarning";
+            this.unplaylistedSongsWarning.Size = new System.Drawing.Size(416, 16);
+            this.unplaylistedSongsWarning.TabIndex = 46;
+            this.unplaylistedSongsWarning.Text = "Getting details of unplaylisted songs, This may take a while";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
             this.ClientSize = new System.Drawing.Size(1065, 889);
+            this.Controls.Add(this.unplaylistedSongsWarning);
             this.Controls.Add(this.songDownloadLabel);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
@@ -653,6 +666,7 @@
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label songDownloadLabel;
+        private System.Windows.Forms.Label unplaylistedSongsWarning;
     }
 }
 

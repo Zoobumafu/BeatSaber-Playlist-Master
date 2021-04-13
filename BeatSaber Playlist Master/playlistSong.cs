@@ -59,6 +59,29 @@ namespace BeatSaberPlaylistMaster
             uploader = map.Uploader.Username;
         }
 
+
+        public async Task populateByKeyAsync(string key)
+        {
+
+
+            // Setup the client's HTTP User Agent 
+            HttpOptions options = new HttpOptions(name: appName, version: new Version(1, 0, 0));
+
+            // Use this to interact with the API
+            BeatSaver beatsaver = new BeatSaver(options);
+
+            Beatmap map = new Beatmap(beatsaver, key, null);
+
+            await map.Populate();
+
+            hash = map.Hash;
+            this.key = map.Key;
+            songName = map.Name;
+            downloadURL = map.DownloadURL;
+            uploader = map.Uploader.Username;
+        }
+
+
         public async void populateSongByName()
         {
             try
@@ -101,18 +124,19 @@ namespace BeatSaberPlaylistMaster
             TimeSpan timeOut = new TimeSpan(0, 0, 60);
             HttpOptions options = new HttpOptions(name: "Test Client", version: new Version(1, 0, 0), timeOut);
 
+
             // Use this to interact with the API
             BeatSaver beatsaver = new BeatSaver(options);
 
             Beatmap mp = new Beatmap(beatsaver, null, hash);
-
+            //await populateByHashAsync();
+            
             try
             {
-
-                //await populateByHashAsync();
                 await mp.Populate();
 
                 await mp.ZipBytes();
+                Console.WriteLine("Downloading " + songName);
                 //this.songName = mp.Name;
             }
 
@@ -131,6 +155,7 @@ namespace BeatSaberPlaylistMaster
                     await mp.Populate();
                     await mp.ZipBytes();
                     //this.songName = mp.Name;
+                    Console.WriteLine("DownloadError \n" + e);
                 }
                 else
                 {
@@ -145,7 +170,7 @@ namespace BeatSaberPlaylistMaster
             try
             {
                 System.Byte[] file = mp.ZipBytes().Result;
-                File.WriteAllBytes(@"C:\TEMP\" + mp.Key + @".zip", file);
+                File.WriteAllBytes(Path.GetTempPath() + mp.Key + @".zip", file);
             }
             catch(Exception e)
             {
@@ -184,7 +209,7 @@ namespace BeatSaberPlaylistMaster
             try
             {
                 string newPath = beatSaberDirectory + @"\Beat Saber_Data\CustomLevels\" + @mp.Key + @" " + validSongName;
-                string tempPath = @"C:\TEMP\" + mp.Key + @".zip";
+                string tempPath = Path.GetTempPath() + mp.Key + @".zip";
                 ZipArchive zip = ZipFile.OpenRead(tempPath);
                 if (Directory.Exists(@newPath))
                 {
@@ -196,7 +221,7 @@ namespace BeatSaberPlaylistMaster
             }
             catch(Exception e)
             {
-                MessageBox.Show("Error unpacking song \n " + e.Message);
+                Console.WriteLine("Error unpacking song \n " + e.Message);
                 //var warining = Task.Run(() => { MessageBox.Show("Error unpacking song \n " + e.Message); });
                 return;
             }

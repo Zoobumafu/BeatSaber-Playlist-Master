@@ -214,9 +214,9 @@ namespace BeatSaberPlaylistMaster
             }
         }
 
-        
+
         public void associateFilesWithSongs()
-        { 
+        {
             DirectoryInfo filesDirectory = new DirectoryInfo(beatSaberDirectory + @"\Beat Saber_Data\CustomLevels");
             DirectoryInfo[] files = filesDirectory.GetDirectories();
 
@@ -241,12 +241,12 @@ namespace BeatSaberPlaylistMaster
 
                 }
             }
-            
-            catch(Exception e)
+
+            catch (Exception e)
             {
                 MessageBox.Show("Directory not found " + e);
             }
-            
+
             for (int j = 0; j < songFiles.Count; j++)
             {
                 bool inPlaylist = false;
@@ -258,15 +258,15 @@ namespace BeatSaberPlaylistMaster
                         {
                             allSongs[i].file = songFiles[j];
                             inPlaylist = true;
-                            break;
+                            continue;
                         }
                     }
 
-                       
+
                 }
                 if (inPlaylist == false)
                 {
-                    
+                    //MessageBox.Show(songFiles[j]._songName);
                     outOfPlaylistFiles.Add(songFiles[j]);
                     playlistSong newSong = new playlistSong();
                     newSong.songName = songFiles[j]._songName;
@@ -283,7 +283,7 @@ namespace BeatSaberPlaylistMaster
                 if (allSongs[i].file == null)
                 {
                     missingFile.Add(allSongs[i]);
-                    
+
                 }
                 else
                 {
@@ -299,6 +299,7 @@ namespace BeatSaberPlaylistMaster
             for (int i = 0; i < playlists.Count; i++)
             {
                 playlistTreeView1.Nodes.Add(playlists[i].playlistTitle);
+                playlistTreeView1.Nodes[playlistTreeView1.Nodes.Count - 1].Tag = playlists[i];
             }
         }
 
@@ -315,6 +316,7 @@ namespace BeatSaberPlaylistMaster
                 {
                     treeView.Nodes.Add(playlist.songs[i].hash);
                 }
+                treeView.Nodes[treeView.Nodes.Count - 1].Tag = playlist.songs[i];
             }
 
         }
@@ -574,11 +576,13 @@ namespace BeatSaberPlaylistMaster
                     string jsonText = JsonConvert.SerializeObject(playlists[i], Formatting.Indented);
                     File.WriteAllText(playlists[i].filePath, jsonText);
                 }
-                MessageBox.Show("All playlists saved successfully");
+                var warining = Task.Run(() => { MessageBox.Show("All playlists saved successfully"); });
+                //MessageBox.Show("All playlists saved successfully");
             }
             else
             {
-                MessageBox.Show("Fetching song details, please try again in a few seconds");
+                var warining = Task.Run(() => { MessageBox.Show("Fetching song details, please try again in a few seconds"); });
+                //MessageBox.Show("Fetching song details, please try again in a few seconds");
             }
             for (int i = 0; i < playlists.Count; i++)
             {
@@ -680,10 +684,23 @@ namespace BeatSaberPlaylistMaster
         {
             if (currentSongPath == "missing")
             {
-                if (!downloadQueue.Contains(currentSong))
-                {
-                    downloadQueue.Add(currentSong);
-                }
+                    if (currentSong.file == null)
+                    {
+                        bool exists = false;
+                        for (int k = 0; k < downloadQueue.Count; k++)
+                        {
+                            if (downloadQueue[k].songName == currentSong.songName)
+                            {
+                                exists = true;
+                            }
+                        }
+                        if (!exists)
+                        {
+                            downloadQueue.Add(currentSong);
+                            downloadSongs();
+                        }
+                    }
+                
                 //queue.Show();
                 //queue.addToQueue(currentSong, beatSaberDirectory);
             }
@@ -883,10 +900,20 @@ namespace BeatSaberPlaylistMaster
                 }
             }
 
+            //var uniqueUnplaylisted = unplaylisted.GroupBy(x => x.songName).Select(y => y.First()).ToList();
+
+            //for (int i = 0; i < uniqueUnplaylisted.Count; i++)
+            //{
+            //    addSong(uniqueUnplaylisted[i].songName);
+            //    MessageBox.Show("adding" + uniqueUnplaylisted[i].songName);
+            //} 
+
             for (int i = 0; i < unplaylisted.Count; i++)
             {
                 addSong(unplaylisted[i].songName);
             }
+
+            
         }
 
         private void removeDuplicatesButton_Click(object sender, EventArgs e)
@@ -984,10 +1011,22 @@ namespace BeatSaberPlaylistMaster
                     {
                         for (int j = 0; j < playlists[i].songs.Count; j++)
                         {
-                            if (!downloadQueue.Contains(playlists[i].songs[j]))
+                            if (playlists[i].songs[j].file == null)
                             {
-                                downloadQueue.Add(playlists[i].songs[j]);
+                                bool exists = false;
+                                for (int k = 0; k < downloadQueue.Count; k++)
+                                {
+                                    if (downloadQueue[k].songName == playlists[i].songs[j].songName)
+                                    {
+                                        exists = true;
+                                    }
+                                }
+                                if (!exists)
+                                {
+                                    downloadQueue.Add(playlists[i].songs[j]);
+                                }
                             }
+                            
                         }
                         //queue.addToQueueAsync(playlists[i], beatSaberDirectory);
                     }
@@ -1007,16 +1046,27 @@ namespace BeatSaberPlaylistMaster
 
         private void downloadAllMissingSongsButton_Click(object sender, EventArgs e)
         {
-            Playlist songsToDownload = new Playlist();
+            
             try
             {
                 for (int i = 0; i < playlists.Count; i++)
                 {
                     for (int j = 0; j < playlists[i].songs.Count; j++)
                     {
-                        if (!downloadQueue.Contains(playlists[i].songs[j]))
+                        if (playlists[i].songs[j].file == null)
                         {
-                            downloadQueue.Add(playlists[i].songs[j]);
+                            bool exists = false;
+                            for (int k = 0; k < downloadQueue.Count; k++)
+                            {
+                                if (downloadQueue[k].songName == playlists[i].songs[j].songName)
+                                {
+                                    exists = true;
+                                }
+                            }
+                            if (!exists)
+                            {
+                                downloadQueue.Add(playlists[i].songs[j]);
+                            }
                         }
                     }
                 }
@@ -1045,15 +1095,6 @@ namespace BeatSaberPlaylistMaster
             {
                 //downloadQueue[i].downloadSong(beatSaberDirectory).Dispose();
             }
-            if (failedSongs.Count > 0)
-            {
-                string failedSongsString = "Download finished, but we have failed to download the following songs - \n";
-                for (int i = 0; i < failedSongs.Count; i++)
-                {
-                    failedSongsString = failedSongsString + failedSongs[i].songName + "\n";
-                }
-                MessageBox.Show(failedSongsString);
-            }
             
         }
 
@@ -1072,7 +1113,7 @@ namespace BeatSaberPlaylistMaster
                 while (currentDownloadNumber < downloadQueue.Count)
                 {
                     songDownloadLabel.Text = "[" + currentDownloadNumber + @"/" + downloadQueue.Count + "] " + downloadQueue[currentDownloadNumber].songName;
-                    int timeout = 1000;
+                    int timeout = 30000;
                     var task = downloadQueue[currentDownloadNumber].downloadSong(beatSaberDirectory);
                     if (await Task.WhenAny(task, Task.Delay(timeout)) == task)
                     {
@@ -1082,10 +1123,11 @@ namespace BeatSaberPlaylistMaster
                     {
 
                     }
-                    if (downloadQueue[currentDownloadNumber].file == null)
-                    {
-                        failedSongs.Add(downloadQueue[currentDownloadNumber]);
-                    }
+                    //if (downloadQueue[currentDownloadNumber].file == null)
+                    //{
+                    //    failedSongs.Add(downloadQueue[currentDownloadNumber]);
+                    //}
+
                     currentDownloadNumber++;
                 }
                 currentlyDownloading = false;
@@ -1101,6 +1143,23 @@ namespace BeatSaberPlaylistMaster
                 //}
                 
                 songDownloadLabel.Text = "Done'd";
+                for (int i = 0; i < downloadQueue.Count; i++)
+                {
+                    if (downloadQueue[i].file == null)
+                    {
+                       failedSongs.Add(downloadQueue[i]);
+                    }
+                }
+                if (failedSongs.Count > 0)
+                {
+                    string failedSongsString = "Download finished, but we have failed to download the following songs - \n";
+                    for (int i = 0; i < failedSongs.Count; i++)
+                    {
+                        failedSongsString = failedSongsString + failedSongs[i].songName + "\n";
+                    }
+                    MessageBox.Show(failedSongsString);
+                }
+                
             }
         }
 
