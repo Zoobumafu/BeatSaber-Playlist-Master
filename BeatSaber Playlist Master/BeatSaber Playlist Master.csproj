@@ -192,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="computer-icons-playlist-download-png-favpng-bJ8Ya6wH8z9W1srerrT4wwhrr.ico" />
+    <None Include="Resources\EmzBWX-XYAQyKFW.jpg" />
+    <None Include="Resources\wp4370352[1].png" />
+    <None Include="Resources\beat-saber-vr-game_a2psamqUmZqaraWkpJRmZW1lrWdoaWU[1].jpg" />
     <None Include="Resources\beat-saber-cover[1].jpg" />
     <None Include="Resources\6ce9feb8cd09d5a05d9b390f36dc5b41[1].png" />
   </ItemGroup>

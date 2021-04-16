@@ -59,5 +59,35 @@ namespace BeatSaberPlaylistMaster.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap beat_saber_vr_game_a2psamqUmZqaraWkpJRmZW1lrWdoaWU_1_ {
+            get {
+                object obj = ResourceManager.GetObject("beat-saber-vr-game_a2psamqUmZqaraWkpJRmZW1lrWdoaWU[1]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EmzBWX_XYAQyKFW {
+            get {
+                object obj = ResourceManager.GetObject("EmzBWX-XYAQyKFW", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wp4370352_1_ {
+            get {
+                object obj = ResourceManager.GetObject("wp4370352[1]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

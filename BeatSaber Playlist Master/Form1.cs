@@ -18,8 +18,7 @@ using Microsoft.Win32;
 
 /* TO DO - 
 
-- Create a button to download all missing songs from all playlists
-- Troubleshoot the tons of errors that pop when you try to download a song.
+- Add darkmode
 
 */
 
@@ -40,6 +39,8 @@ namespace BeatSaberPlaylistMaster
 
         DownloadQueue queue;
         Thread t;
+
+        
 
         //Path to BeatSaber directory
         string beatSaberDirectory = @"C:\Program Files (x86)\Steam\steamapps\common\Beat Saber";
@@ -74,8 +75,6 @@ namespace BeatSaberPlaylistMaster
             associateFilesWithSongs();
             PopulatePlaylistForms(playlists);
             PopulateAllSongsTreeView();
-
-            
 
         }      
 
@@ -188,12 +187,14 @@ namespace BeatSaberPlaylistMaster
             //Populate playlists
             try
             {
+
                 DirectoryInfo playlistsDirectory = new DirectoryInfo(beatSaberDirectory + @"\Playlists");
                 var playlistFiles = playlistsDirectory.GetFiles();
 
                 for (int i = 0; i < playlistFiles.Length; i++)
                 {
-                    string myString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
+                    string tempString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
+                    string myString = tempString.Substring(tempString.IndexOf('{'));
                     playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
 
 
@@ -210,7 +211,7 @@ namespace BeatSaberPlaylistMaster
 
             catch (Exception e)
             {
-                MessageBox.Show("Not found directory: " + e);
+                Console.WriteLine("Directory not found: " + e);
             }
         }
 
@@ -366,7 +367,27 @@ namespace BeatSaberPlaylistMaster
                 {
                 if (sortedList[i].songName != null)
                 {
-                    if (sortedList[i].songName.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
+                    bool mapCreatorFound = false;
+                    bool authorIsFound = false;
+                    if (sortedList[i].file != null)
+                    {
+                        if (sortedList[i].file._songAuthorName != null)
+                        {
+                            if (sortedList[i].file._songAuthorName.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            {
+                                authorIsFound = true;
+                            }
+                        }
+                        if (sortedList[i].file._levelAuthorName != null)
+                        {
+                            if (sortedList[i].file._levelAuthorName.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            {
+                                mapCreatorFound = true;
+                            }
+                        }
+                    }
+
+                    if (sortedList[i].songName.IndexOf(filter, 0, StringComparison.CurrentCultureIgnoreCase) != -1 || authorIsFound || mapCreatorFound)
                     {
                         bool alreadyExists = false;
                         for (int k = 0; k < allSongsTreeView.Nodes.Count; k++)
@@ -565,6 +586,20 @@ namespace BeatSaberPlaylistMaster
 
         void saveAll()
         {
+            for (int i = 0; i < playlists.Count; i++)
+            {
+                string directoryPath = Path.GetDirectoryName(playlists[i].filePath);
+                string fileName = Path.GetFileNameWithoutExtension(playlists[i].filePath);
+                string extension = Path.GetExtension(playlists[i].filePath);
+                //MessageBox.Show(playlists[i].filePath);
+                //if (fileName != playlists[i].playlistTitle)
+                //{
+                    File.Delete(playlists[i].filePath);
+                    playlists[i].filePath = directoryPath + @"\" + playlists[i].playlistTitle + extension;
+                    playlists[i]._filename = playlists[i].playlistTitle + extension;
+
+                //}
+            }
             // NewtonSoft cant save image file properly, therefore it is deleted before saving
             if (savingEnabled)
             {
@@ -588,6 +623,9 @@ namespace BeatSaberPlaylistMaster
             {
                 playlists[i].setImage();
             }
+
+            
+
 
             isSaved = true;
             
@@ -722,11 +760,33 @@ namespace BeatSaberPlaylistMaster
         private void addButton_Click(object sender, EventArgs e)
         {
             addSong();
+            for (int i = 0; i < allSongsTreeView.Nodes.Count; i++)
+            {
+                if (allSongsTreeView.Nodes[i] == allSongsTreeView.SelectedNode)
+                {
+                    if (allSongsTreeView.Nodes.Count > i + 1)
+                    {
+                        allSongsTreeView.SelectedNode = allSongsTreeView.Nodes[i + 1];
+                    }
+                    break;
+                }
+            }
         }
 
         private void removeButton_Click(object sender, EventArgs e)
         {
             removeSong();
+            for (int i = 0; i < playlistSongTreeView.Nodes.Count; i++)
+            {
+                if (playlistSongTreeView.Nodes[i] == playlistSongTreeView.SelectedNode)
+                {
+                    if (playlistSongTreeView.Nodes.Count > i + 1)
+                    {
+                        playlistSongTreeView.SelectedNode = playlistSongTreeView.Nodes[i];
+                    }
+                    break;
+                }
+            }
         }
 
         public bool createNewPlaylist (string playListName, string playListAuthor)
@@ -1163,5 +1223,76 @@ namespace BeatSaberPlaylistMaster
             }
         }
 
+        private void appearsInPlaylistTreeView_DoubleClick(object sender, EventArgs e)
+        {
+            TreeNode treeNode = appearsInPlaylistTreeView.SelectedNode;
+                for (int i = 0; i < playlistTreeView1.Nodes.Count; i++)
+                {
+                    if (playlistTreeView1.Nodes[i].Text == treeNode.Text)
+                    {
+                    playlistTreeView1.SelectedNode = playlistTreeView1.Nodes[i];
+                    lastSelectedPlaylistNode = playlistTreeView1.Nodes[i];
+                    populatePlaylistSongTreeView();
+                        for (int j = 0; j < playlistSongTreeView.Nodes.Count; j++)
+                        {
+                            if (playlistSongTreeView.Nodes[j].Text == allSongsTreeView.SelectedNode.Text)
+                            {
+                                playlistSongTreeView.SelectedNode = playlistSongTreeView.Nodes[j];
+                            }
+                        }
+                    }
+                }
+           
+            
+        }
+
+
+
+
+        private void playlistSongTreeView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // DO NOT TOUCH, AND DO NOT DELETE.
+        }
+
+        private void playlistSongTreeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (playlistSongTreeView.SelectedNode != null)
+                {
+                    removeSong();
+                }
+            }
+        }
+
+        /*
+         REMNANTS OF ATTEMPT TO CREATE A DARKMODE - 
+         
+         private void lightViewRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            
+            this.BackColor = Color.NavajoWhite;
+            allSongsTreeView.BackColor = Color.NavajoWhite;
+            appearsInPlaylistTreeView.BackColor = Color.NavajoWhite;
+            playlistTreeView1.BackColor = Color.NavajoWhite;
+            playlistSongTreeView.BackColor = Color.NavajoWhite;
+            this.ForeColor = Color.Black;
+        }
+
+        private void darkViewRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            this.BackColor = Color.FromArgb(40, 36, 36);
+            allSongsTreeView.BackColor = Color.FromArgb(48, 52, 52);
+            appearsInPlaylistTreeView.BackColor = Color.FromArgb(48, 52, 52);
+            playlistTreeView1.BackColor = Color.FromArgb(48, 52, 52);
+            playlistSongTreeView.BackColor = Color.FromArgb(48, 52, 52);
+            //(56,60,60)
+            this.ForeColor = Color.White;
+            foreach (var button in this.Controls.OfType<Button>())
+            {
+                button.BackColor = Color.FromArgb(48, 52, 52);
+            }
+        }
+        */
     }
 }

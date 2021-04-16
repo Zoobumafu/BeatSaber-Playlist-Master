@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.playlistTreeView1 = new System.Windows.Forms.TreeView();
-            this.label1 = new System.Windows.Forms.Label();
             this.playlistSongTreeView = new System.Windows.Forms.TreeView();
             this.label2 = new System.Windows.Forms.Label();
             this.allSongsTreeView = new System.Windows.Forms.TreeView();
@@ -77,6 +76,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.songDownloadLabel = new System.Windows.Forms.Label();
             this.unplaylistedSongsWarning = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.sortGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.playlistPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.songPictureBox)).BeginInit();
@@ -92,16 +92,6 @@
             this.playlistTreeView1.TabIndex = 0;
             this.playlistTreeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.playlistTreeView1_AfterSelect);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(512, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(83, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Playlists";
-            // 
             // playlistSongTreeView
             // 
             this.playlistSongTreeView.BackColor = System.Drawing.Color.NavajoWhite;
@@ -110,13 +100,15 @@
             this.playlistSongTreeView.Name = "playlistSongTreeView";
             this.playlistSongTreeView.Size = new System.Drawing.Size(539, 400);
             this.playlistSongTreeView.TabIndex = 2;
-            this.playlistSongTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.songTreeView1_AfterSelect);
             this.playlistSongTreeView.DoubleClick += new System.EventHandler(this.songTreeView1_DoubleClick);
+            this.playlistSongTreeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.playlistSongTreeView_KeyDown);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Segoe Print", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label2.Location = new System.Drawing.Point(7, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 28);
@@ -203,6 +195,7 @@
             this.appearsInPlaylistTreeView.Name = "appearsInPlaylistTreeView";
             this.appearsInPlaylistTreeView.Size = new System.Drawing.Size(407, 58);
             this.appearsInPlaylistTreeView.TabIndex = 13;
+            this.appearsInPlaylistTreeView.DoubleClick += new System.EventHandler(this.appearsInPlaylistTreeView_DoubleClick);
             // 
             // saveButton
             // 
@@ -234,6 +227,7 @@
             // 
             // sortGroupBox
             // 
+            this.sortGroupBox.BackColor = System.Drawing.Color.Transparent;
             this.sortGroupBox.Controls.Add(this.lastModifiedRadioButton);
             this.sortGroupBox.Controls.Add(this.nameRadioButton);
             this.sortGroupBox.Location = new System.Drawing.Point(12, 25);
@@ -245,13 +239,14 @@
             // lastModifiedRadioButton
             // 
             this.lastModifiedRadioButton.AutoSize = true;
+            this.lastModifiedRadioButton.BackColor = System.Drawing.Color.Transparent;
             this.lastModifiedRadioButton.Location = new System.Drawing.Point(66, 13);
             this.lastModifiedRadioButton.Name = "lastModifiedRadioButton";
             this.lastModifiedRadioButton.Size = new System.Drawing.Size(88, 17);
             this.lastModifiedRadioButton.TabIndex = 1;
             this.lastModifiedRadioButton.TabStop = true;
             this.lastModifiedRadioButton.Text = "Last Modified";
-            this.lastModifiedRadioButton.UseVisualStyleBackColor = true;
+            this.lastModifiedRadioButton.UseVisualStyleBackColor = false;
             this.lastModifiedRadioButton.CheckedChanged += new System.EventHandler(this.lastModifiedRadioButton_CheckedChanged);
             // 
             // nameRadioButton
@@ -296,7 +291,9 @@
             // label9
             // 
             this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Segoe Print", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label9.Location = new System.Drawing.Point(510, 211);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(148, 23);
@@ -543,20 +540,34 @@
             // unplaylistedSongsWarning
             // 
             this.unplaylistedSongsWarning.AutoSize = true;
+            this.unplaylistedSongsWarning.BackColor = System.Drawing.Color.Transparent;
             this.unplaylistedSongsWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unplaylistedSongsWarning.ForeColor = System.Drawing.Color.Red;
+            this.unplaylistedSongsWarning.ForeColor = System.Drawing.Color.Black;
             this.unplaylistedSongsWarning.Location = new System.Drawing.Point(71, 7);
             this.unplaylistedSongsWarning.Name = "unplaylistedSongsWarning";
             this.unplaylistedSongsWarning.Size = new System.Drawing.Size(416, 16);
             this.unplaylistedSongsWarning.TabIndex = 46;
             this.unplaylistedSongsWarning.Text = "Getting details of unplaylisted songs, This may take a while";
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Segoe Script", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(510, 38);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 25);
+            this.label13.TabIndex = 49;
+            this.label13.Text = "Playlists";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.NavajoWhite;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1065, 889);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.unplaylistedSongsWarning);
             this.Controls.Add(this.songDownloadLabel);
             this.Controls.Add(this.label12);
@@ -601,8 +612,8 @@
             this.Controls.Add(this.allSongsTreeView);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.playlistSongTreeView);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.playlistTreeView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "BeatSaber Playlist Master";
@@ -620,7 +631,6 @@
         #endregion
 
         private System.Windows.Forms.TreeView playlistTreeView1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TreeView playlistSongTreeView;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TreeView allSongsTreeView;
@@ -667,6 +677,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label songDownloadLabel;
         private System.Windows.Forms.Label unplaylistedSongsWarning;
+        private System.Windows.Forms.Label label13;
     }
 }
 
