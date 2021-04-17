@@ -542,7 +542,7 @@
             this.unplaylistedSongsWarning.AutoSize = true;
             this.unplaylistedSongsWarning.BackColor = System.Drawing.Color.Transparent;
             this.unplaylistedSongsWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unplaylistedSongsWarning.ForeColor = System.Drawing.Color.Black;
+            this.unplaylistedSongsWarning.ForeColor = System.Drawing.Color.Red;
             this.unplaylistedSongsWarning.Location = new System.Drawing.Point(71, 7);
             this.unplaylistedSongsWarning.Name = "unplaylistedSongsWarning";
             this.unplaylistedSongsWarning.Size = new System.Drawing.Size(416, 16);

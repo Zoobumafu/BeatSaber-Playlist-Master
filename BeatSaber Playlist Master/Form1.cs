@@ -40,7 +40,8 @@ namespace BeatSaberPlaylistMaster
         DownloadQueue queue;
         Thread t;
 
-        
+        // Flag to track if already populating labels
+        bool populatingLabels = false;
 
         //Path to BeatSaber directory
         string beatSaberDirectory = @"C:\Program Files (x86)\Steam\steamapps\common\Beat Saber";
@@ -71,7 +72,7 @@ namespace BeatSaberPlaylistMaster
 
             InitializeComponent();
             allSongs = allSongs.Distinct().ToList();
-
+            populateLabels();
             associateFilesWithSongs();
             PopulatePlaylistForms(playlists);
             PopulateAllSongsTreeView();
@@ -177,10 +178,40 @@ namespace BeatSaberPlaylistMaster
                 {
                     updateAlertLabel.Text = "Song Details Updated, Click Me!";
                 }
-
             }
         }
 
+        public async Task populateLabels()
+        {
+            bool updatedSongs = false;
+            if (!populatingLabels)
+            {
+                populatingLabels = true;
+                for (int i = 0; i < allSongs.Count; i++)
+                {
+                    try
+                    {
+                        if (allSongs[i].songName == null || allSongs[i].uploader == null || allSongs[i].key == null || allSongs[i].songName == "" || allSongs[i].uploader == "" || allSongs[i].key == "")
+                        {
+                            await allSongs[i].populateByHashAsync();
+                            updatedSongs = true;
+                            Console.WriteLine("Updated " + allSongs[i].songName);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+                    
+                }
+                if (updatedSongs)
+                {
+                    MessageBox.Show("I updated some missing songs details, it is recommended that you save your playlists now");
+                }
+            }
+            unplaylistedSongsWarning.Text = "";
+
+        }
 
         private void populatePlaylists()
         {
@@ -196,7 +227,6 @@ namespace BeatSaberPlaylistMaster
                     string tempString = System.IO.File.ReadAllText(playlistFiles[i].FullName);
                     string myString = tempString.Substring(tempString.IndexOf('{'));
                     playlists.Add(JsonConvert.DeserializeObject<Playlist>(myString));
-
 
                     playlists[i].filePath = playlistFiles[i].FullName;
 
@@ -291,8 +321,9 @@ namespace BeatSaberPlaylistMaster
                     songsWithFiles.Add(allSongs[i]);
                 }
             }
-
         }
+
+        
 
         void PopulatePlaylistForms(List<Playlist> playlists)
         {
