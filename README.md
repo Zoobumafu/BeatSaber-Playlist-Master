@@ -1,3 +1,5 @@
+# Notice - This program is being re-written from the ground up due to bad code practices that were initially used.
+
 # BeatSaberPlaylistMaster
 **This app creates and edit playlist files (json and bplist) that can be read by [rithik-b's Playlist Manager](https://github.com/rithik-b/PlaylistManager), without this mod you won't see any of the created playlists in game**
 
