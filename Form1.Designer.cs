@@ -31,6 +31,7 @@ namespace BeatSaber_Playlist_Master
         {
             this.allSongsTreeView = new System.Windows.Forms.TreeView();
             this.playlistTreeView = new System.Windows.Forms.TreeView();
+            this.createPlaylistButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // allSongsTreeView
@@ -47,11 +48,22 @@ namespace BeatSaber_Playlist_Master
             this.playlistTreeView.Size = new System.Drawing.Size(257, 194);
             this.playlistTreeView.TabIndex = 1;
             // 
+            // createPlaylistButton
+            // 
+            this.createPlaylistButton.Location = new System.Drawing.Point(460, 41);
+            this.createPlaylistButton.Name = "createPlaylistButton";
+            this.createPlaylistButton.Size = new System.Drawing.Size(129, 23);
+            this.createPlaylistButton.TabIndex = 2;
+            this.createPlaylistButton.Text = "New Playlist";
+            this.createPlaylistButton.UseVisualStyleBackColor = true;
+            this.createPlaylistButton.Click += new System.EventHandler(this.createPlaylistButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(601, 899);
+            this.Controls.Add(this.createPlaylistButton);
             this.Controls.Add(this.playlistTreeView);
             this.Controls.Add(this.allSongsTreeView);
             this.Name = "Form1";
@@ -64,6 +76,7 @@ namespace BeatSaber_Playlist_Master
 
         private System.Windows.Forms.TreeView allSongsTreeView;
         private System.Windows.Forms.TreeView playlistTreeView;
+        private System.Windows.Forms.Button createPlaylistButton;
     }
 }
 

@@ -15,8 +15,8 @@ namespace BeatSaber_Playlist_Master
     public partial class Form1 : Form
     {
 
-        List<Playlist> playlists = new List<Playlist>();
-        List<PlaylistSong> allSongs = new List<PlaylistSong>();
+        public List<Playlist> playlists = new List<Playlist>();
+        public List<PlaylistSong> allSongs = new List<PlaylistSong>();
         public Form1()
         {
 
@@ -50,7 +50,11 @@ namespace BeatSaber_Playlist_Master
                 playlistTreeView.Nodes.Add(treeNode);
             }
         }
-        
 
+        private void createPlaylistButton_Click(object sender, EventArgs e)
+        {
+            NewPlaylistForm form = new NewPlaylistForm(this);
+            form.ShowDialog();
+        }
     }
 }

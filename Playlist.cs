@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace BeatSaber_Playlist_Master
 {
-    class Playlist
+    public class Playlist
     {
         public static bool BeatSaverLimitReached = false;
         public string playlistTitle { set; get; }

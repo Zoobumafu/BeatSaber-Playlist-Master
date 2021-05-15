@@ -145,10 +145,6 @@ namespace BeatSaber_Playlist_Master
 
         }
 
-        async void FetchSongDetails()
-        {
-
-        }
 
         /// <summary>
         /// Clear and re-populate AllSongs TreeView
