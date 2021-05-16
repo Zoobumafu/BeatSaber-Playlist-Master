@@ -88,14 +88,23 @@ namespace BeatSaberPlaylistMaster
                 string previousDirectory = "";
                 bool correctDirectory = false;
 
-                var hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                var myKey = hklm.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 620980");
-                string value = (string)(myKey.GetValue("InstallLocation"));
-                if (File.Exists(@value + @"\Beat Saber.exe"))
+                try
                 {
-                    correctDirectory = true;
-                    beatSaberDirectory = @value;
+                    var hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                    var myKey = hklm.OpenSubKey(
+                        @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Steam App 620980");
+                    string value = (string) (myKey.GetValue("InstallLocation"));
+                    if (File.Exists(@value + @"\Beat Saber.exe"))
+                    {
+                        correctDirectory = true;
+                        beatSaberDirectory = @value;
+                    }
                 }
+                catch (NullReferenceException registryKeyFailedToAccess)
+                {
+                    correctDirectory = false;
+                }
+                
 
                 // Could not find the location automatically, prompting the user to input it.
 
@@ -510,7 +519,11 @@ namespace BeatSaberPlaylistMaster
                     playlistTreeView1.Nodes[i].Checked = true;
                 }
             }
-            
+
+            if (myPlaylist == null)
+            {
+                return;
+            }
             
 
             PopulateSongsForm(myPlaylist, playlistSongTreeView);
@@ -1052,6 +1065,11 @@ namespace BeatSaberPlaylistMaster
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (playlists.Count == 0)
+            {
+                MessageBox.Show("Create a playlist first");
+                return;
+            }
             DialogResult dialogResult = MessageBox.Show("Do you want to save before updating the list?\nIf your lists' song information is incomplete, you will lose data we have gathered from Beatsaver since you launched the game.", "Warning", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
@@ -1084,7 +1102,7 @@ namespace BeatSaberPlaylistMaster
                     }
                 }
             }
-            else
+            else if (playlistSongTreeView.Nodes.Count > 0)
             {
                 playlistSongTreeView.SelectedNode = playlistSongTreeView.Nodes[0];
             }
