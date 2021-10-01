@@ -10,6 +10,7 @@ using System.Threading;
 using System.Net;
 using System.IO.Compression;
 using System.Timers;
+using BeatSaverSharp.Exceptions;
 
 namespace BeatSaberPlaylistMaster
 {
@@ -21,7 +22,7 @@ namespace BeatSaberPlaylistMaster
         public string key { set; get; }
         public string uploader { set; get; }
         public string hash { set; get; }
-        public string songName  { set; get; }
+        public string songName { set; get; }
         public int _beatsPerMinute { set; get; }
 
         public string downloadURL;
@@ -36,12 +37,10 @@ namespace BeatSaberPlaylistMaster
         public static int erroredSongs = 0;
 
         // Set Time OUT
-        
+
 
         public async Task populateByHashAsync()
         {
-
-
             // Setup the client's HTTP User Agent 
             HttpOptions options = new HttpOptions(name: appName, version: new Version(1, 0, 0));
 
@@ -62,8 +61,6 @@ namespace BeatSaberPlaylistMaster
 
         public async Task populateByKeyAsync(string key)
         {
-
-
             // Setup the client's HTTP User Agent 
             HttpOptions options = new HttpOptions(name: appName, version: new Version(1, 0, 0));
 
@@ -103,16 +100,27 @@ namespace BeatSaberPlaylistMaster
                     path.Substring(0, path.IndexOf(' '));
                     mapName = path.Substring(0, path.IndexOf(' '));
                     Beatmap map = new Beatmap(beatsaver, mapName);
-                    await map.Populate();
+                    try
+                    {
+                        await map.Populate();
+                    }
+                    catch (InvalidPartialKeyException partialKeyException)
+                    {
+                        await Task.Run(() =>
+                        {
+                            MessageBox.Show(
+                                $"An error occurred trying to populate the beatmap for the song you're adding.\nThis application uses the first word in the song's directory name to look up a beatmap: {mapName} from the path {fileDirectory.Name}.");
+                        });
+                    }
+
                     await map.RefreshStats();
                     this.hash = map.Hash;
                     this.downloadURL = map.DirectDownload;
-                    this.uploader = map.Uploader.Username;
-                    
+                    this.uploader = map.Uploader?.Username;
                 }
             }
 
-            catch(Exception e)
+            catch (Exception e)
             {
                 var warining = Task.Run(() => { MessageBox.Show("Exception getting hash" + e); });
             }
@@ -130,7 +138,7 @@ namespace BeatSaberPlaylistMaster
 
             Beatmap mp = new Beatmap(beatsaver, null, hash);
             //await populateByHashAsync();
-            
+
             try
             {
                 await mp.Populate();
@@ -145,8 +153,12 @@ namespace BeatSaberPlaylistMaster
                 if (e is BeatSaverSharp.Exceptions.RateLimitExceededException rateLimitException)
                 {
                     return;
-                    var warining = Task.Run(() => { MessageBox.Show("Reached download limit, I will attempt to continue the download where we left off in 5 minutes.\n\n" +
-                        "It is common on first run to occur due to that some playlists are missing details and need to be updated, we are taking care of that for you right now."); });
+                    var warining = Task.Run(() =>
+                    {
+                        MessageBox.Show(
+                            "Reached download limit, I will attempt to continue the download where we left off in 5 minutes.\n\n" +
+                            "It is common on first run to occur due to that some playlists are missing details and need to be updated, we are taking care of that for you right now.");
+                    });
                     Playlist.BeatSaverLimitReached = true;
 
 
@@ -172,14 +184,14 @@ namespace BeatSaberPlaylistMaster
                 System.Byte[] file = mp.ZipBytes().Result;
                 File.WriteAllBytes(Path.GetTempPath() + mp.Key + @".zip", file);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error saving song as zip \n" + e.Message);
                 //var warining = Task.Run(() => { MessageBox.Show("Error saving song as zip \n" + e.Message); });
                 return;
             }
 
-           
+
             try
             {
                 if (songName != null)
@@ -190,14 +202,14 @@ namespace BeatSaberPlaylistMaster
                 {
                     validSongName = mp.Name;
                 }
-                
+
                 string invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                 foreach (char c in invalid)
                 {
                     validSongName = validSongName.Replace(c.ToString(), "");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show("Error interacting with song name \n" + e.Message);
                 //var warining = Task.Run(() => { MessageBox.Show("Error interacting with song name \n" + e.Message); });
@@ -205,21 +217,22 @@ namespace BeatSaberPlaylistMaster
                 return;
             }
 
-            
+
             try
             {
-                string newPath = beatSaberDirectory + @"\Beat Saber_Data\CustomLevels\" + @mp.Key + @" " + validSongName;
+                string newPath = beatSaberDirectory + @"\Beat Saber_Data\CustomLevels\" + @mp.Key + @" " +
+                                 validSongName;
                 string tempPath = Path.GetTempPath() + mp.Key + @".zip";
                 ZipArchive zip = ZipFile.OpenRead(tempPath);
                 if (Directory.Exists(@newPath))
                 {
                     Directory.Delete(@newPath, true);
                 }
+
                 zip.ExtractToDirectory(@newPath);
                 File.Delete(@tempPath);
-
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Error unpacking song \n " + e.Message);
                 //var warining = Task.Run(() => { MessageBox.Show("Error unpacking song \n " + e.Message); });
@@ -227,7 +240,6 @@ namespace BeatSaberPlaylistMaster
             }
 
             return;
-            
         }
 
         public void awaitBeatRateException()
@@ -236,17 +248,11 @@ namespace BeatSaberPlaylistMaster
             time = time.AddSeconds(30);
             while (DateTime.Now < time)
             {
-
             }
+
             MessageBox.Show("WAITED");
         }
 
         private System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
-
-
-
-
     }
-
-
 }
